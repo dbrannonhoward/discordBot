@@ -1,25 +1,28 @@
 from bot_logging.bot_logger import DiscordBotLog
-from bot_memory.bot_brain import BotBrain
+from bot_memory.bot_brain import Brain
+from message_parsing.message_reader import MessageReader
 from SECRETS import MY_TOKEN
 import discord
 
-bot_logger = DiscordBotLog()
-bot_brain = BotBrain()
+bot_L = DiscordBotLog()
+bot_B = Brain()
+bot_MR = MessageReader()
 
 
 class MyClient(discord.Client):
     async def on_ready(self):
-        bot_brain.announce("logged on as {0}!".format(self.user))
+        bot_B.announce("logged on as {0}!".format(self.user))
 
     async def on_message(self, message):
-        bot_brain.announce("message from {0.author}: {0.content}".format(message))
+        # bot_brain.announce("message from {0.author}: {0.content}".format(message))
         if message.author == self.user:
-            bot_logger.info_event("received message from self")
+            bot_L.info_event("bot sends : " + str(message.content))
             return
 
-        if ' ' in message.content:
-            bot_logger.info_event("responding to message")
-            await message.channel.send('i am not to be spoken with')
+        if bot_MR.detects_a_space_in(message):
+            await message.channel.send(bot_B.respond('SPACE_REPLY'))
+        elif bot_MR.detects_question_mark_in(message):
+            await message.channel.send(bot_B.respond('QUESTION_REPLY'))
 
 
 if __name__ == '__main__':

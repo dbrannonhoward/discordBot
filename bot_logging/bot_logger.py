@@ -7,7 +7,7 @@ import os
 
 class DiscordBotLog:
     def __init__(self):
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(BOT_NAME)
         self.logger.setLevel(logging.DEBUG)
         self.log_directory = self.get_log_directory()
         self.cleanup_log_directory()
@@ -17,6 +17,7 @@ class DiscordBotLog:
                                            mode=LOG_HANDLER_MODE)
         self.handler.setFormatter(logging.Formatter(LOG_FORMAT))
         self.logger.addHandler(self.handler)
+        self.info_event("DiscordBotLog initialized..")
 
     def cleanup_log_directory(self):
         self.delete_files_with_extension(LOG_FILE_EXTENSION)

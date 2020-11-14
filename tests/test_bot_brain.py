@@ -1,6 +1,6 @@
-from bot_memory.bot_brain import BotBrain
+from bot_memory.bot_brain import Brain
 from time import sleep
-test_bb = BotBrain()
+test_bb = Brain()
 
 print("starting tests..")
 
