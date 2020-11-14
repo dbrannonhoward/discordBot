@@ -13,7 +13,7 @@ class DiscordBotLog(logging.Logger):
         self.handler = logging.FileHandler(filename=self.log_file_name,
                                            encoding=LOG_ENCODING,
                                            mode=LOG_HANDLER_MODE)
-        self.handler.setFormatter(logging.Formatter(LOG_FORMAT_STRING))
+        self.handler.setFormatter(logging.Formatter(LOG_FORMAT))
         self.logger.addHandler(self.handler)
 
     def cleanup_log_directory(self):
@@ -22,7 +22,7 @@ class DiscordBotLog(logging.Logger):
     @staticmethod
     def create_log_file_and_return_name() -> str:
         ts = datetime.now()
-        time_now = str(ts.strftime(TIME_FORMAT_STRING))
+        time_now = str(ts.strftime(TIME_FORMAT))
         log_file_name = LOG_FILE_PREFIX + str(time_now) + LOG_FILE_EXTENSION
         try:
             if not os.path.exists(log_file_name):
