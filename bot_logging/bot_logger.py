@@ -4,10 +4,9 @@ import logging
 import os
 
 
-class DiscordBotLog(logging.Logger):
+class DiscordBotLog:
     def __init__(self):
-        super(DiscordBotLog, self).__init__(BOT_NAME)
-        self.logger = logging.getLogger(BOT_NAME)
+        self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         self.log_file_name = self.create_log_file_and_return_name()
         self.handler = logging.FileHandler(filename=self.log_file_name,
