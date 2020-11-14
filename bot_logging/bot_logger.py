@@ -1,7 +1,4 @@
-from bot_logging.LOG_CONSTANTS import LOG_FILE_EXTENSION
-from bot_logging.LOG_CONSTANTS import LOG_FILE_PREFIX
-from bot_logging.LOG_CONSTANTS import LOG_FORMAT_STRING
-from bot_logging.LOG_CONSTANTS import TIME_FORMAT_STRING
+from bot_logging.LOG_CONSTANTS import *
 from datetime import datetime
 import logging
 import os
@@ -9,11 +6,13 @@ import os
 
 class DiscordBotLog(logging.Logger):
     def __init__(self):
-        super(DiscordBotLog, self).__init__('discordBot')
-        self.logger = logging.getLogger('discordBot')
+        super(DiscordBotLog, self).__init__(BOT_NAME)
+        self.logger = logging.getLogger(BOT_NAME)
         self.logger.setLevel(logging.DEBUG)
         self.log_file_name = self.create_log_file_and_return_name()
-        self.handler = logging.FileHandler(filename=self.log_file_name, encoding='utf-8', mode='w')
+        self.handler = logging.FileHandler(filename=self.log_file_name,
+                                           encoding=LOG_ENCODING,
+                                           mode=LOG_HANDLER_MODE)
         self.handler.setFormatter(logging.Formatter(LOG_FORMAT_STRING))
         self.logger.addHandler(self.handler)
 
