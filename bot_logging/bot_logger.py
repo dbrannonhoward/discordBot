@@ -1,4 +1,5 @@
 from bot_logging.LOG_CONSTANTS import *
+from CONSTANTS import STRFTIME_FORMAT
 from datetime import datetime
 import logging
 import os
@@ -8,6 +9,8 @@ class DiscordBotLog:
     def __init__(self):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
+        self.log_directory = self.get_log_directory()
+        self.cleanup_log_directory()
         self.log_file_name = self.create_log_file_and_return_name()
         self.handler = logging.FileHandler(filename=self.log_file_name,
                                            encoding=LOG_ENCODING,
@@ -16,12 +19,12 @@ class DiscordBotLog:
         self.logger.addHandler(self.handler)
 
     def cleanup_log_directory(self):
-        pass
+        self.delete_files_with_extension(LOG_FILE_EXTENSION)
 
     @staticmethod
     def create_log_file_and_return_name() -> str:
         ts = datetime.now()
-        time_now = str(ts.strftime(TIME_FORMAT))
+        time_now = str(ts.strftime(STRFTIME_FORMAT))
         log_file_name = LOG_FILE_PREFIX + str(time_now) + LOG_FILE_EXTENSION
         try:
             if not os.path.exists(log_file_name):
@@ -32,6 +35,19 @@ class DiscordBotLog:
 
     def debug_event(self, event_description):
         self.logger.log(logging.DEBUG, event_description)
+
+    def delete_files_with_extension(self, extension):
+        try:
+            for root, dirs, files in os.walk(self.log_directory):
+                for file in files:
+                    if file.endswith(LOG_FILE_EXTENSION):
+                        os.remove(file)
+        except OSError:
+            raise OSError
+
+    @staticmethod
+    def get_log_directory():
+        return os.getcwd()
 
     def info_event(self, event_description):
         self.logger.log(logging.INFO, event_description)
