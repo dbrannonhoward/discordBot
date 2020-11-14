@@ -25,9 +25,12 @@ class DiscordBotLog(logging.Logger):
         ts = datetime.now()
         time_now = str(ts.strftime(TIME_FORMAT_STRING))
         log_file_name = LOG_FILE_PREFIX + str(time_now) + LOG_FILE_EXTENSION
-        if not os.path.exists(log_file_name):
-            os.mknod(log_file_name)
-        return log_file_name
+        try:
+            if not os.path.exists(log_file_name):
+                os.mknod(log_file_name)
+            return log_file_name
+        except OSError:
+            raise OSError
 
     def debug_event(self, event_description):
         self.logger.log(logging.DEBUG, event_description)
