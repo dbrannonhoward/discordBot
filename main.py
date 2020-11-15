@@ -1,3 +1,4 @@
+from bot_eyes.bot_vision import Vision
 from bot_logging.bot_logger import DiscordBotLog
 from bot_memory.bot_brain import Brain
 from message_parsing.message_reader import MessageReader
@@ -7,6 +8,7 @@ import discord
 bot_L = DiscordBotLog()
 bot_B = Brain()
 bot_MR = MessageReader()
+bot_V = Vision()
 
 
 class MyClient(discord.Client):
