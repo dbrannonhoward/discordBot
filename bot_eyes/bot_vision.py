@@ -1,3 +1,4 @@
+from time import sleep
 import discord
 
 
@@ -8,7 +9,7 @@ class Vision:
     async def get_all_text_channels(self):
         pass
 
-    async def get_all_users(self):
+    async def get_all_members(self):
         pass
 
     async def get_all_voice_channels(self):

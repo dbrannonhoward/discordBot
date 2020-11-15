@@ -3,6 +3,7 @@ from bot_logging.bot_logger import DiscordBotLog
 from bot_memory.bot_brain import Brain
 from message_parsing.message_reader import MessageReader
 from SECRETS import MY_TOKEN
+from time import sleep
 import discord
 
 bot_L = DiscordBotLog()
@@ -14,6 +15,10 @@ bot_V = Vision()
 class MyClient(discord.Client):
     async def on_ready(self):
         bot_B.announce("logged on as {0}!".format(self.user))
+        member_generator = self.get_all_members()
+        async for member in member_generator:
+            print(member)
+            sleep(1)
 
     async def on_message(self, message):
         # bot_brain.announce("message from {0.author}: {0.content}".format(message))
