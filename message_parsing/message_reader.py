@@ -1,4 +1,5 @@
 from bot_logging.bot_logger import DiscordBotLog
+from SECRETS import SHUTDOWN
 
 message_logger = DiscordBotLog()
 
@@ -20,6 +21,13 @@ class MessageReader:
     def detects_question_mark_in(message):
         if '?' in message.content:
             message_logger.info_event("bot detected '?' in message : " + str(message.content))
+            return True
+        return False
+
+    @staticmethod
+    def detects_shutdown(message):
+        if SHUTDOWN in message.content:
+            message_logger.info_event("bot detected shutdown phrase in message : " + str(message.content))
             return True
         return False
 

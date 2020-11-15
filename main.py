@@ -19,10 +19,14 @@ class MyClient(discord.Client):
             bot_L.info_event("bot sends : " + str(message.content))
             return
 
+        if bot_MR.detects_shutdown(message):
+            await message.channel.send(bot_B.respond('SHUTDOWN'))
+            exit()
+
         if bot_MR.detects_a_space_in(message):
-            await message.channel.send(bot_B.respond('SPACE_REPLY'))
+            await message.channel.send(bot_B.respond('SPACE'))
         elif bot_MR.detects_question_mark_in(message):
-            await message.channel.send(bot_B.respond('QUESTION_REPLY'))
+            await message.channel.send(bot_B.respond('QUESTION'))
 
 
 if __name__ == '__main__':
