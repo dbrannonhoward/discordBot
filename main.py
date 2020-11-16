@@ -1,23 +1,24 @@
+from bot_configuration.bot_configurator import Configurator
 from bot_eyes.bot_vision import Vision
 from bot_logging.bot_logger import DiscordBotLog
 from bot_memory.bot_brain import Brain
 from message_parsing.message_reader import MessageReader
 from SECRETS import MY_TOKEN
-from time import sleep
 import discord
 
 bot_L = DiscordBotLog()
 bot_B = Brain()
+bot_C = Configurator()
 bot_MR = MessageReader()
 bot_V = Vision()
 
 
 class MyClient(discord.Client):
     async def on_ready(self):
-        bot_B.announce("logged on as {0}!".format(self.user))
+        event_logon = "logged on as user {0} with id {1}".format(self.user, self.user.id)
+        bot_B.announce(event_logon)
 
     async def on_message(self, message):
-        # bot_brain.announce("message from {0.author}: {0.content}".format(message))
         if message.author == self.user:
             bot_L.info_event("bot sends : " + str(message.content))
             return
@@ -33,5 +34,6 @@ class MyClient(discord.Client):
 
 
 if __name__ == '__main__':
-    client = MyClient()
+    all_intents = discord.Intents.all()
+    client = MyClient(intents=bot_C.get_intent())
     client.run(MY_TOKEN)
