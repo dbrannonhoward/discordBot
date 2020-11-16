@@ -1,9 +1,10 @@
 from bot_configurator.bot_configuration import BotConfiguration
 from bot_finder.bot_discovery import BotDiscovery
 from bot_logger.bot_log import BotLog
-from bot_memorizer.bot_memory import BotMemory
+from bot_brain.bot_memory import BotMemory
 from bot_message_reader.bot_message_library import BotMessageLibrary
 from SECRETS import MY_TOKEN
+import asyncio
 import discord
 
 
@@ -30,11 +31,11 @@ class MyClient(discord.Client):
 
     def __init__(self, **options):
         super().__init__(**options)
-        self.Memory = self.Memory()
         self.Configuration = self.Configuration()
+        self.Discovery = self.Discovery()  # TODO not used at this time
         self.Log = self.Log()
+        self.Memory = self.Memory()
         self.MessageLibrary = self.MessageLibrary()
-        # self.Vision = self.Vision()
 
     async def on_ready(self):
         event_logon = "logged on as user {0} with id {1}".format(self.user, self.user.id)
@@ -46,12 +47,19 @@ class MyClient(discord.Client):
             return
 
         if self.MessageLibrary.detects_shutdown(message):
-            await message.channel.send(self.Memory.respond('SHUTDOWN'))
+            await message.channel.send(self.Memory.respond(message, 'SHUTDOWN'))
             exit()  # TODO this is a dirty shutdown
         if self.MessageLibrary.detects_a_space_in(message):
-            await message.channel.send(self.Memory.respond('SPACE'))
+            await message.channel.send(self.Memory.respond(message, 'SPACE'))
+        elif self.MessageLibrary.detects_user_list_request(message):
+            for member in self.get_all_members():
+                self.Memory.respond(message, str(member))
+                await message.channel.send(str(member))
+                await asyncio.sleep(1)
         elif self.MessageLibrary.detects_question_mark_in(message):
-            await message.channel.send(self.Memory.respond('QUESTION'))
+            await message.channel.send(self.Memory.respond(message, 'QUESTION'))
+        else:
+            await message.channel.send(self.Memory.respond(message, 'DUMB'))
 
 
 if __name__ == '__main__':

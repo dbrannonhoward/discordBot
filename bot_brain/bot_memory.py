@@ -1,5 +1,5 @@
 from bot_logger.bot_log import BotLog
-from bot_memorizer.MEMORY_STRUCTURE import memories
+from bot_brain.MEMORY_STRUCTURE import memories
 from time_tracking.time_tools import TimeTools
 
 
@@ -44,8 +44,16 @@ class BotMemory:
         except KeyError:
             raise KeyError
 
-    def respond(self, quote_key):
-        return self.memory[quote_key]
+    def respond(self, message, quote_key):
+        # TODO ugly quickfix, rewrite
+        event_info = "responding to {0.content} sent by {0.author} with ".\
+                         format(message) + str(quote_key)
+        if quote_key in self.memory.keys():
+            self.Log.info_event(event_info)
+            print(event_info)
+            return self.memory[quote_key]
+        print(event_info)
+        return "NO KEY : " + str(quote_key)
 
     def set_last_user_spoken_to(self, username):
         self.memory["last_user_spoken_to"] = username

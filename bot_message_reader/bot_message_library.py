@@ -1,4 +1,5 @@
 from bot_logger.bot_log import BotLog
+from SECRETS import USERLIST
 from SECRETS import SHUTDOWN
 
 
@@ -16,6 +17,13 @@ class BotMessageLibrary:
     def detects_a_space_in(self, message):
         if ' ' in message.content:
             self.Log.info_event("bot detected space in message : " + str(message.content))
+            return True
+        return False
+
+    def detects_user_list_request(self, message):
+        if USERLIST in message.content:
+            event_info = "bot detected user list phrase in message : " + str(message.content)
+            self.Log.info_event(event_info)
             return True
         return False
 
