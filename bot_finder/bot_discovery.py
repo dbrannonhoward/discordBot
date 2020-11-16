@@ -1,7 +1,4 @@
-import discord
-
-
-class Vision:
+class BotDiscovery:
     def __init__(self):
         pass
 

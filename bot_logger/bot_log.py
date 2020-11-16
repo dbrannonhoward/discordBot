@@ -1,11 +1,11 @@
-from bot_logging.LOG_CONSTANTS import *
+from bot_logger.LOG_CONSTANTS import *
 from CONSTANTS import STRFTIME_FORMAT
 from datetime import datetime
 import logging
 import os
 
 
-class DiscordBotLog:
+class BotLog:
     def __init__(self):
         self.logger = logging.getLogger(BOT_NAME)
         self.logger.setLevel(logging.DEBUG)
@@ -38,9 +38,11 @@ class DiscordBotLog:
         self.logger.log(logging.DEBUG, event_description)
 
     def delete_files_with_extension(self, extension):
+        # TODO known bug if .log file is in this directory..
         try:
             for root, dirs, files in os.walk(self.log_directory):
                 for file in files:
+                    # file_abs_path = os.path.abspath(file)
                     if file.endswith(LOG_FILE_EXTENSION):
                         os.remove(file)
         except OSError:
@@ -50,12 +52,12 @@ class DiscordBotLog:
     def get_log_directory():
         return os.getcwd()
 
-    def info_event(self, event_description):
+    def info_event(self, event_description: str):
         self.logger.log(logging.INFO, event_description)
 
 
 def main():
-    log = DiscordBotLog()
+    log = BotLog()
     log.debug_event("debug event")
     log.info_event("info event")
 

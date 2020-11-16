@@ -1,20 +1,23 @@
-from bot_logging.bot_logger import DiscordBotLog
-from bot_memory.MEMORY_STRUCTURE import memories
+from bot_logger.bot_log import BotLog
+from bot_memorizer.MEMORY_STRUCTURE import memories
 from time_tracking.time_tools import TimeTools
 
 
-brain_logger = DiscordBotLog()
 time_tool = TimeTools()
 
 
-class Brain:
+class BotMemory:
+    class Log(BotLog):
+        def __init__(self):
+            super().__init__()
+
     def __init__(self):
-        brain_logger.info_event("BotBrain initialized..")
+        self.Log = self.Log()
+        self.Log.info_event("BotBrain initialized..")
         self.memory = memories
 
-    @staticmethod
-    def announce(announcement: str):
-        brain_logger.info_event(announcement)
+    def announce(self, announcement: str):
+        self.Log.info_event(announcement)
         print(announcement)
 
     # def create_memory(self):
@@ -33,9 +36,8 @@ class Brain:
     def get_time_last_message_sent(self):
         return self.memory["time_last_message_sent"]
 
-    @staticmethod
     def read_memory(self, memory_key):
-        brain_logger.info_event("reading memory..")
+        self.Log.info_event("reading memory..")
         print("bot_brain remembering..")
         try:
             return self.memory[memory_key]
@@ -59,7 +61,7 @@ class Brain:
 
 
 def main():
-    bb = Brain()
+    bb = BotMemory()
 
 
 if __name__ == '__main__':
