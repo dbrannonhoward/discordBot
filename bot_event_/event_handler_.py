@@ -1,5 +1,5 @@
+from bot_event_.EVENT_DICT import EVENT
 from bot_log_.bot_log import LogMgmt
-from bot_event_.EVENT_DICT import memories
 from time_tracking.time_tools import TimeTools
 
 
@@ -14,15 +14,11 @@ class EventHandler:
     def __init__(self):
         self.Log = self.Log()
         self.Log.info_event("BotBrain initialized..")
-        self.memory = memories
+        self.memory = EVENT
 
     def announce(self, announcement: str):
         self.Log.info_event(announcement)
         print(announcement)
-
-    # def create_memory(self):
-    #     brain_logger.info_event("creating memory..")
-    #     print("bot_event_ recalling..")
 
     def get_last_user_spoken_to(self):
         return self.memory["last_user_spoken_to"]

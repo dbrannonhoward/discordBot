@@ -1,7 +1,7 @@
 from bot_config_.bot_configuration import Configurator
 from bot_event_.event_handler_ import EventHandler
 from bot_log_.bot_log import LogMgmt
-from bot_message_.message_parser_ import MessageParser
+from bot_message_.message_handler_ import MessageHandler
 from bot_server_.server_parser_ import ServerParser
 from SECRETS import MY_TOKEN
 import asyncio
@@ -11,11 +11,12 @@ import discord
 class DiscordClient(discord.Client):
     def __init__(self, **options):
         super().__init__(**options)
-        self.Cfg, self.EH, self.LM, self.MP, self.SP = \
-            Configurator(), EventHandler(), LogMgmt(), MessageParser(), ServerParser()
+        self.Cfg, self.EH, self.LM, self.MH, self.SP = \
+            Configurator(), EventHandler(), LogMgmt(), MessageHandler(), ServerParser()
 
     async def on_ready(self):
-        event_logon = "logged on as user {0} with id {1}".format(self.user, self.user.id)
+        user_, user_id_ = self.user, self.user.id
+        self.MP.log_on(user_, user_id_)
         self.EH.announce(event_logon)
 
     async def on_message(self, message):
