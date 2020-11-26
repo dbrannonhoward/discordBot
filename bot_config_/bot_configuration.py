@@ -1,7 +1,7 @@
 import discord
 
 
-class BotConfiguration:
+class Configurator:
     def __init__(self):
         pass
 

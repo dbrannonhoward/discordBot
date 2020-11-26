@@ -1,4 +1,4 @@
-class BotDiscovery:
+class ServerParser:
     def __init__(self):
         pass
 

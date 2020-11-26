@@ -1,10 +1,10 @@
-from bot_logger.bot_log import BotLog
+from bot_log_.bot_log import LogMgmt
 from SECRETS import USERLIST
 from SECRETS import SHUTDOWN
 
 
-class BotMessageLibrary:
-    class Log(BotLog):
+class MessageParser:
+    class Log(LogMgmt):
         def __init__(self):
             super().__init__()
 

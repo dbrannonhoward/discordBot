@@ -1,0 +1,12 @@
+# extensions to ignore
+*.log
+
+# files to ignore
+# .gitignore
+SECRETS.py
+
+# folders to ignore
+.idea/
+__pycache__/
+pytest/
+venv_DBT/

@@ -1,13 +1,13 @@
-from bot_logger.bot_log import BotLog
-from bot_brain.MEMORY_STRUCTURE import memories
+from bot_log_.bot_log import LogMgmt
+from bot_event_.EVENT_DICT import memories
 from time_tracking.time_tools import TimeTools
 
 
 time_tool = TimeTools()
 
 
-class BotMemory:
-    class Log(BotLog):
+class EventHandler:
+    class Log(LogMgmt):
         def __init__(self):
             super().__init__()
 
@@ -22,7 +22,7 @@ class BotMemory:
 
     # def create_memory(self):
     #     brain_logger.info_event("creating memory..")
-    #     print("bot_brain recalling..")
+    #     print("bot_event_ recalling..")
 
     def get_last_user_spoken_to(self):
         return self.memory["last_user_spoken_to"]
@@ -38,7 +38,7 @@ class BotMemory:
 
     def read_memory(self, memory_key):
         self.Log.info_event("reading memory..")
-        print("bot_brain remembering..")
+        print("bot_event_ remembering..")
         try:
             return self.memory[memory_key]
         except KeyError:
@@ -69,7 +69,7 @@ class BotMemory:
 
 
 def main():
-    bb = BotMemory()
+    bb = EventHandler()
 
 
 if __name__ == '__main__':
