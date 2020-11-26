@@ -1,11 +1,11 @@
-from bot_logger.LOG_CONSTANTS import *
+from bot_log_.LOG_CONSTANTS import *
 from CONSTANTS import STRFTIME_FORMAT
 from datetime import datetime
 import logging
 import os
 
 
-class BotLog:
+class LogMgmt:
     def __init__(self):
         self.logger = logging.getLogger(BOT_NAME)
         self.logger.setLevel(logging.DEBUG)
@@ -57,7 +57,7 @@ class BotLog:
 
 
 def main():
-    log = BotLog()
+    log = LogMgmt()
     log.debug_event("debug event")
     log.info_event("info event")
 
