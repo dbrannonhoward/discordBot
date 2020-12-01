@@ -13,30 +13,23 @@ class DiscordClient(discord.Client):
         super().__init__(**options)
         self.Cfg, self.EH, self.LM, self.MP, self.SP = \
             Configurator(), EventHandler(), LogMgmt(), MessageParser(), ServerParser()
+        self.actor = None
 
     async def on_ready(self):
         event_logon = "logged on as user {0} with id {1}".format(self.user, self.user.id)
         self.EH.announce(event_logon)
 
     async def on_message(self, message):
-        if message.author == self.user:
-            self.LM.info_event("bot sends : " + str(message.content))
-            return
-
-        if self.MP.detects_shutdown(message):
-            await message.channel.send(self.EH.respond(message, 'SHUTDOWN'))
-            exit()  # TODO this is a dirty shutdown
-        if self.MP.detects_a_space_in(message):
-            await message.channel.send(self.EH.respond(message, 'SPACE'))
-        elif self.MP.detects_user_list_request(message):
-            for member in self.get_all_members():
-                self.EH.respond(message, str(member))
-                await message.channel.send(str(member))
+        self.LM.info_event("parsing message : " + str(message.content) + ", sent by : " + str(message.author))
+        self.actor = self.MP.parse_message(message, self)
+        if self.actor is None:
+            return  # TODO does this work as intended? skips rest of function..?
+        if isinstance(self.actor, list):
+            for actor_ in self.actor:
+                await actor_
                 await asyncio.sleep(1)
-        elif self.MP.detects_question_mark_in(message):
-            await message.channel.send(self.EH.respond(message, 'QUESTION'))
-        else:
-            await message.channel.send(self.EH.respond(message, 'DUMB'))
+            return
+        await self.actor
 
 
 if __name__ == '__main__':
