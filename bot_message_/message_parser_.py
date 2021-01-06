@@ -1,4 +1,5 @@
 from bot_log_.bot_log import LogMgmt
+from datetime import datetime
 from SECRETS import USERLIST
 from SECRETS import SHUTDOWN
 
@@ -8,6 +9,8 @@ class MessageParser:
         self.LM = LogMgmt()
         self.LM.info_event("MessageReader initialized..")
         self.author = ""
+        self.channel = ""
+        self.created = datetime
         self.content = ""
 
     def detects_a_space_in(self, message):
@@ -38,14 +41,20 @@ class MessageParser:
     @staticmethod
     def get_message_detail(message, detail: str):
         if detail == 'author' and hasattr(message, detail):
-            return str(message.author)
+            return message.author.name
+        if detail == 'created' and hasattr(message, detail):
+            return message.created_at
         if detail == 'content' and hasattr(message, detail):
-            return str(message.content)
+            return message.content
+        if detail == 'channel' and hasattr(message, detail):
+            return message.channel.name
         raise RuntimeError
 
     def parse_message(self, message, discord_client_object):
         self.author = self.get_message_detail(message, 'author')
+        self.created = self.get_message_detail(message, 'created')
         self.content = self.get_message_detail(message, 'content')
+        self.channel = self.get_message_detail(message, 'channel')
         if message.author == discord_client_object.user:
             self.LM.info_event("bot sends : " + str(message.content))
             return None

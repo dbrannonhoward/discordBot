@@ -7,7 +7,7 @@ import os
 
 class LogMgmt:
     def __init__(self):
-        self.logger = logging.getLogger(BOT_NAME)
+        self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         self.log_directory = self.get_log_directory()
         self.cleanup_log_directory()
